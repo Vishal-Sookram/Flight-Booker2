@@ -52,32 +52,6 @@ Times are shown in local airport time, with daylight saving handled by the brows
 flight is only created in the booking system when somebody picks it; until then it is just a search result.
 Flights are 15-85% full when first seen (the same every time, so results are stable), and about 1 in 30 is sold out.
 
-## Structure
-```
-src/domain/       The business logic. Plain JavaScript, no React - this is the port of the Java lab.
-  seat.js           Seat (abstract) + EconomySeat / BusinessSeat / FirstClassSeat (private suite)
-  flight.js         Flight, seat map, availability, FlightStatus (Scheduled / Boarding / Departed / Cancelled)
-  booking.js        Booking + BookingStatus (Confirmed / Checked in / Waitlisted / Cancelled)
-  passenger.js      Passenger (validated email / phone, unique passport)
-  pricing.js        PricingService - the one place that decides what a seat costs
-  waitlist.js       WaitlistManager - first-come-first-served queue per flight
-  bookingService.js The only class the screens talk to: rules, waitlist promotion, change notification, saving
-  airports.js       Airport directory + ranked search (airportData.js is generated)
-  timezones.js      Local airport time <-> real moments, date keys, formatting
-  schedule.js       ScheduleCatalog: weekly rows -> offers for a date (data in src/data/schedule.json)
-  tripSearch.js     Result filters, sorting, time-of-day slots, valid return flights
-  seatSelection.js  Seat a group together
-  payment.js        Card checks (Luhn, expiry, CVV) + the demo payment gateway
-  reference.js      Booking references
-  load.js           Deterministic "other customers" so flights look realistically busy
-  money.js dates.js csv.js idGenerator.js errors.js demoData.js
-  __tests__/        Jest tests (run with `npm test`)
-src/services/     The one shared BookingService instance (backed by localStorage)
-src/hooks/        useBookingService() - re-renders a screen whenever the data changes
-src/components/   The screens: Home (search), SearchResults, Checkout, TripDetails, FlightSearch (flights on file),
-                  BookTicket (seat map + booking), ListBooking, Passengers, ManageFlights, AirportInput, SeatMap
-scripts/          build-schedule.mjs (see Flight data)
-```
 
 ## Business rules
 - Prices are whole pence (no floating point). The fare is fixed when the booking is made.
